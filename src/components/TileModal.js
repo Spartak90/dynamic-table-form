@@ -19,17 +19,11 @@ const TileModal = function (props) {
     } = props;
 
     const [tileForm] = Form.useForm();
-    const [formLoaded, setFormLoaded] = useState(false);
+    // const [formLoaded, setFormLoaded] = useState(false);
 
     let fieldsRulesMap = _buldFieldRulesMap(tileMetaData);
 
-    // used to set field values only if the form has been loaded at least once
-    useEffect(() => {
-        tileForm.setFieldsValue(tileData);
-        setFormLoaded(true);
-    }, []);
-
-    if (formLoaded) tileForm.setFieldsValue(tileData);
+    if (props.visible) tileForm.setFieldsValue(tileData);
 
     /////////////////
     /////////////////
@@ -82,40 +76,14 @@ const TileModal = function (props) {
 
         const toCalculateFields = fieldsRulesMap.specialFieldsMap[changedField];
 
-        // checks and calculates all the fields that are dependent on the changed field
-        if (toCalculateFields?.length > 0) {
-            toCalculateFields.forEach((fieldToCalculate) => {
-                const calculationRules = fieldsRulesMap[fieldToCalculate].specialRules.constraint;
-                const calculation = calculationRules.constraintType;
-
-                let result = _initValue(calculation);
-
-                for (let i = 0; i < calculationRules.fields.length; i++) {
-                    const field = calculationRules.fields[i];
-
-                    const fieldValue = tileForm.getFieldValue(field);
-
-                    if (fieldValue) result = _performAction(calculation, result, fieldValue);
-                    else {
-                        result = undefined;
-                        break;
-                    }
-                }
-
-                tileForm.setFieldsValue({
-                    [fieldToCalculate]: result
-                });
-            });
-
-            function _initValue(calculation) {
-                if (calculation === FORM_ADVANCED_CONSTRAINTS.multiply) return 1;
-                else if (calculation === FORM_ADVANCED_CONSTRAINTS.add) return 0;
-            }
-        }
-
         tileForm.setFieldsValue({
             [changeData.name]: changeData.value
         });
+
+        // checks and calculates all the fields that are dependent on the changed field
+        if (toCalculateFields?.length > 0) {
+            _calculateFields(toCalculateFields);
+        }
     }
 
     function onOkFn() {
@@ -224,6 +192,36 @@ const TileModal = function (props) {
 
             return rulesMap;
         }, {});
+    }
+
+    function _calculateFields(toCalculateFields) {
+        toCalculateFields.forEach((fieldToCalculate) => {
+            const calculationRules = fieldsRulesMap[fieldToCalculate].specialRules.constraint;
+            const calculation = calculationRules.constraintType;
+
+            let result = _initValue(calculation);
+
+            for (let i = 0; i < calculationRules.fields.length; i++) {
+                const field = calculationRules.fields[i];
+
+                const fieldValue = tileForm.getFieldValue(field);
+
+                if (fieldValue) result = _performAction(calculation, result, fieldValue);
+                else {
+                    result = undefined;
+                    break;
+                }
+            }
+
+            tileForm.setFieldsValue({
+                [fieldToCalculate]: result
+            });
+        });
+
+        function _initValue(calculation) {
+            if (calculation === FORM_ADVANCED_CONSTRAINTS.multiply) return 1;
+            else if (calculation === FORM_ADVANCED_CONSTRAINTS.add) return 0;
+        }
     }
 
     function _isFormInvalid() {

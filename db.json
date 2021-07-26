@@ -6,9 +6,9 @@
       "title": "Title tile",
       "description": "Tile description",
       "imageUrl": "http://www.mediagenix.tv/wp-content/uploads/2017/10/mgx_videov1.png",
-      "averageDuration": 12,
+      "averageDuration": 10,
       "numberOfItems": 5,
-      "totalDuration": 60
+      "totalDuration": 50
     },
     {
       "id": "2",
@@ -22,9 +22,9 @@
       "type": "tba",
       "title": "asdgsa",
       "description": "Testing Description Update",
-      "averageDuration": 5,
-      "numberOfItems": 10,
-      "totalDuration": 50
+      "averageDuration": 6,
+      "numberOfItems": 6,
+      "totalDuration": 36
     },
     {
       "id": "M69CGBU",
