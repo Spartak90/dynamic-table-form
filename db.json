@@ -31,9 +31,13 @@
       "type": "tba",
       "title": "asdgsa 22",
       "imageUrl": "",
-      "averageDuration": 5,
+      "averageDuration": 55,
       "numberOfItems": 4,
-      "totalDuration": 20
+      "totalDuration": 220
+    },
+    {
+      "title": "Test",
+      "id": "N3w7mJD"
     }
   ],
   "tilesMetadata": {

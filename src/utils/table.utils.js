@@ -6,8 +6,6 @@ import { EditOutlined } from '@ant-design/icons';
 export const buildColumns = (metadatas, {
     onEdit
 }) => {
-    console.log('utils', metadatas);
-
     let columns = metadatas?.map((metadata) => {
         return buildColumn(metadata);
     });
