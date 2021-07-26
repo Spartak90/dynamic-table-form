@@ -1,0 +1,108 @@
+{
+  "tiles": [
+    {
+      "id": "1",
+      "title": "Title tile",
+      "type": "tba",
+      "description": "Tile description",
+      "imageUrl": "http://www.mediagenix.tv/wp-content/uploads/2017/10/mgx_videov1.png",
+      "numberOfItems": 5,
+      "averageDuration": 12
+    },
+    {
+      "id": "2",
+      "title": "Title of tile 2",
+      "type": null,
+      "description": "Description about what tile 2 is and what it can do"
+    },
+    {
+      "id": "gXXYnvZ",
+      "type": "tba",
+      "title": "asdgsa",
+      "description": "Testing Description Update",
+      "averageDuration": 5,
+      "numberOfItems": 10,
+      "totalDuration": 50
+    },
+    {
+      "id": "M69CGBU",
+      "type": "tba",
+      "title": "asdgsa 22",
+      "averageDuration": 5,
+      "numberOfItems": 6,
+      "totalDuration": 30
+    }
+  ],
+  "tilesMetadata": {
+    "key": "tile",
+    "description": "Tiles page for crud",
+    "model": {
+      "attributes": [
+        {
+          "key": "type",
+          "label": "Type",
+          "valueType": "select",
+          "options": [
+            {
+              "label": "TBA",
+              "value": "tba"
+            }
+          ]
+        },
+        {
+          "key": "title",
+          "label": "Title",
+          "valueType": "string",
+          "constraints": [
+            {
+              "type": "constraint",
+              "constraintType": "required",
+              "level": "Field is required"
+            },
+            {
+              "type": "constraint",
+              "constraintType": "maxLength",
+              "level": "No more than 10 character allowed",
+              "value": 10
+            }
+          ]
+        },
+        {
+          "key": "description",
+          "label": "Description",
+          "valueType": "longString"
+        },
+        {
+          "key": "imageUrl",
+          "label": "URL",
+          "valueType": "url"
+        },
+        {
+          "key": "averageDuration",
+          "label": "Average Duration",
+          "valueType": "number"
+        },
+        {
+          "key": "numberOfItems",
+          "label": "Number Of Items",
+          "valueType": "number"
+        },
+        {
+          "key": "totalDuration",
+          "label": "Total duration",
+          "valueType": "number",
+          "constraints": [
+            {
+              "type": "constraint",
+              "constraintType": "multiply",
+              "fields": [
+                "averageDuration",
+                "numberOfItems"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
