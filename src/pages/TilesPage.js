@@ -2,14 +2,12 @@ import 'antd/dist/antd.css';
 
 import { useTilesMetadataQuery, useTilesQuery } from '../queries/tiles.queries';
 import { useModal } from '../hooks/modal.hook';
-import { Table } from 'antd';
 import { Button } from 'antd';
-import TileModal from '../components/TileModal';
-import { EditOutlined }  from '@ant-design/icons';
+import DynamicFormModal from '../components/DynamicFormModal';
 import { useAddTileMutation, useUpdateTileMutation } from '../mutations/tile.mutations';
 import { useQueryClient } from 'react-query';
 import { TILES_QUERY_KEY } from '../queries/tiles.queries.keys';
-import {FORM_INPUTS} from '../constants/form.const';
+import DynamicTable from '../components/DynamicTable';
 
 /////////////////////
 /////////////////////
@@ -27,11 +25,7 @@ const TilesPage = function () {
         modalData: tileModalData
     } = useModal();
 
-    const pagination = { position: ['none', 'none']};
-
-    let tilesTableColumns = [];
     let tilesDataSource = [];
-
     let tileMetaData = [];
 
     const addTileMutation = useAddTileMutation({
@@ -46,23 +40,23 @@ const TilesPage = function () {
         }
     });
 
+    const pagination = { position: ['none', 'none']};
+
     const resultTiles = tilesQuery.data;
     const resultTilesMetaData = tilesMetadataQuery.data;
 
     if (tilesMetadataQuery.isSuccess) {
         tileMetaData = resultTilesMetaData?.data?.model?.attributes;
-        tilesTableColumns = _buildColumns(resultTilesMetaData?.data?.model?.attributes);
     }
 
     if (tilesQuery.isSuccess) {
         tilesDataSource = resultTiles?.data;
     }
 
-    ///////////////////
-    ///////////////////
+    /////////////////////
+    /////////////////////
 
     const onCreateTileClick = onCreateTileClickFn;
-    const onEditTileClick = onEditTileClickFn;
     const handleOk = handleOkFn;
     const handleCancel = handleCancelFn;
 
@@ -84,20 +78,20 @@ const TilesPage = function () {
                 </div>
             </div>
 
-            <div>
-                <Table
-                    columns={tilesTableColumns}
-                    dataSource={tilesDataSource}
-                    rowKey="id"
-                    pagination={pagination}/>
-            </div>
+            <DynamicTable
+                rowKey="id"
+                pagination={pagination}
+                dataSource={tilesDataSource}
+                metadata={tileMetaData}
+                onEdit={onEditTileClickFn}
+            />
 
-            <TileModal
+            <DynamicFormModal
                 visible={isTileModalVisible}
                 handleOk={handleOk}
                 handleCancel={handleCancel}
-                tileData={tileModalData}
-                tileMetaData={tileMetaData}
+                data={tileModalData}
+                metadatas={tileMetaData}
                 destroyOnClose={true} />
         </div>
     )
@@ -125,77 +119,6 @@ const TilesPage = function () {
 
     function handleCancelFn() {
         closeTileModal();
-    }
-
-    ////////////////////
-    ////////////////////
-
-    function _buildColumns(metadatas) {
-        let columns = metadatas.map((metadata) => {
-            return _buildColumn(metadata);
-        });
-
-        columns = [...columns, {
-            title: 'Actions',
-            key: 'actions',
-            dataIndex: 'action',
-            render: (field, row) => {
-                return (
-                    <>
-                        <Button onClick={() => onEditTileClick(row)}>
-                            <EditOutlined />
-                        </Button>
-                    </>
-                )
-            }
-        }];
-
-        return columns;
-    }
-
-    function _buildColumn(metadata) {
-        const {
-            label,
-            key,
-            valueType
-        } = metadata;
-
-        let render;
-
-        switch(valueType) {
-            case FORM_INPUTS.SELECT: {
-                render = (field) => {
-                    const option = metadata.options.find(option => option.value === field);
-
-                    return (
-                        <>
-                            {field && option && option.label}
-                        </>
-                    )
-                }
-
-                break;
-            }
-
-            case FORM_INPUTS.URL: {
-                render = (field) => {
-                    return (
-                        <>
-                            {field && <img className="table-img" src={field} />}
-                        </>
-                    )
-                };
-
-                break;
-            }
-        }
-
-        return {
-            title: label,
-            key: key,
-            dataIndex: key,
-            render
-        }
     }
 }
 

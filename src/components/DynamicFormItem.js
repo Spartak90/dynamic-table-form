@@ -21,7 +21,7 @@ export default function DynamicFormItem (props) {
             label={label}
             rules={fieldConstraints?.rules}>
                 {
-                    _getField(valueType, {
+                    _getFormItem(valueType, {
                         options,
                         disableField
                     })
@@ -36,7 +36,7 @@ export default function DynamicFormItem (props) {
         return !!fieldConstraints?.specialRules?.constraint;
     }
 
-    function _getField(valueType, config) {
+    function _getFormItem(valueType, config) {
         const { options, disableField } = config;
 
         switch(valueType) {
