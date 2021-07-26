@@ -19,6 +19,6 @@ export const FORM_TYPE_CONSTRAINTS = {
 };
 
 export const FORM_ADVANCED_CONSTRAINTS = {
-    addition: 'addition',
+    add: 'add',
     multiply: 'multiply'
 };

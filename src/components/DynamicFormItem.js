@@ -6,21 +6,24 @@ const { Option } = Select;
 
 export default function DynamicFormItem (props) {
     const {
-        keyName,
+        keyId,
         label,
         valueType,
         fieldConstraints,
         options
     } = props;
 
+    const disableField = _isCalculatedField(fieldConstraints);
+
     return (
         <Form.Item
-            name={keyName}
+            name={keyId}
             label={label}
             rules={fieldConstraints?.rules}>
                 {
                     _getField(valueType, {
-                        options
+                        options,
+                        disableField
                     })
                 }
         </Form.Item>
@@ -29,24 +32,28 @@ export default function DynamicFormItem (props) {
     /////////////////////
     /////////////////////
 
+    function _isCalculatedField(fieldConstraints) {
+        return !!fieldConstraints?.specialRules?.constraint;
+    }
+
     function _getField(valueType, config) {
-        const { options } = config;
+        const { options, disableField } = config;
 
         switch(valueType) {
             case FORM_INPUTS.STRING: {
-                return <Input />;
+                return <Input disabled={disableField} />;
             }
 
             case FORM_INPUTS.LONG_STRING: {
-                return <TextArea />
+                return <TextArea disabled={disableField} />
             }
 
             case FORM_INPUTS.NUMBER: {
-                return <InputNumber className="form-input-number" />;
+                return <InputNumber disabled={disableField} className="form-input-number" />;
             }
 
             case FORM_INPUTS.SELECT: {
-                return <Select allowClear>
+                return <Select allowClear disabled={disableField}>
                         {
                             options && options.map(({label, value}, index) => (
                                 <Option key={`${value}_${index}`} value={value}>
@@ -59,7 +66,7 @@ export default function DynamicFormItem (props) {
 
             case FORM_INPUTS.URL: {
                 return (
-                    <Input />
+                    <Input disabled={disableField} />
                 );
             }
         }

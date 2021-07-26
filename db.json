@@ -2,18 +2,20 @@
   "tiles": [
     {
       "id": "1",
-      "title": "Title tile",
       "type": "tba",
+      "title": "Title tile",
       "description": "Tile description",
       "imageUrl": "http://www.mediagenix.tv/wp-content/uploads/2017/10/mgx_videov1.png",
+      "averageDuration": 12,
       "numberOfItems": 5,
-      "averageDuration": 12
+      "totalDuration": 60
     },
     {
       "id": "2",
-      "title": "Title of tile 2",
-      "type": null,
-      "description": "Description about what tile 2 is and what it can do"
+      "type": "tba",
+      "title": "Tile",
+      "description": "Description about what tile 2 is and what it can do",
+      "imageUrl": "https://melissasiroisblog.files.wordpress.com/2015/04/tumblr_inline_moiixyhwbe1qz4rgp.jpg?w=620"
     },
     {
       "id": "gXXYnvZ",
@@ -28,9 +30,19 @@
       "id": "M69CGBU",
       "type": "tba",
       "title": "asdgsa 22",
+      "imageUrl": "",
       "averageDuration": 5,
-      "numberOfItems": 6,
-      "totalDuration": 30
+      "numberOfItems": 4,
+      "totalDuration": 20
+    },
+    {
+      "type": "tba",
+      "title": "asdgsa 22",
+      "imageUrl": "",
+      "averageDuration": 5,
+      "numberOfItems": 5,
+      "totalDuration": 25,
+      "id": "8N3BQdR"
     }
   ],
   "tilesMetadata": {

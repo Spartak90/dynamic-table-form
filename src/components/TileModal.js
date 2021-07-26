@@ -63,7 +63,7 @@ const TileModal = function (props) {
                         return (
                             <div key={key}>
                                 <DynamicFormItem
-                                    keyName={key}
+                                    keyId={key}
                                     fieldConstraints={fieldsRulesMap[key]}
                                     {...restMetaData} />
                             </div>
@@ -80,8 +80,9 @@ const TileModal = function (props) {
     function onFieldsChangeFn(changeData) {
         const changedField = changeData[0]?.name[0];
 
-        const toCalculateFields = fieldsRulesMap.specialFieldsMap[changedField]
+        const toCalculateFields = fieldsRulesMap.specialFieldsMap[changedField];
 
+        // checks and calculates all the fields that are dependent on the changed field
         if (toCalculateFields?.length > 0) {
             toCalculateFields.forEach((fieldToCalculate) => {
                 const calculationRules = fieldsRulesMap[fieldToCalculate].specialRules.constraint;
@@ -108,7 +109,7 @@ const TileModal = function (props) {
 
             function _initValue(calculation) {
                 if (calculation === FORM_ADVANCED_CONSTRAINTS.multiply) return 1;
-                else if (calculation === FORM_ADVANCED_CONSTRAINTS.addition) return 0;
+                else if (calculation === FORM_ADVANCED_CONSTRAINTS.add) return 0;
             }
         }
 
@@ -159,7 +160,7 @@ const TileModal = function (props) {
                     if (FORM_CONSTRAINTS[constraint.constraintType]) {
                         const rule = FORM_CONSTRAINTS[constraint.constraintType];
 
-                        // maps simple rules to ant form.item format
+                        // maps simple rules to ant Form.Item format
                         acc.rules = [...acc.rules, {
                             type: valueType,
                             [rule]: constraint.value ? constraint.value : true,
@@ -167,7 +168,7 @@ const TileModal = function (props) {
                         }];
                     } else if (FORM_ADVANCED_CONSTRAINTS[constraint.constraintType]) { 
                         /*** special rules like 'multiply' are kept apart,
-                        *  to avoid bugs caused by rules not recognized by form.item
+                        *  to avoid bugs caused by rules not recognized by Form.Item
                         */
                         acc.specialRules = {
                             ...acc.specialRules,
@@ -177,8 +178,8 @@ const TileModal = function (props) {
                         };
 
                         /**
-                         * Maps fields involved in a calculation (like multiply) with an array
-                         * of fields which they are involved in a calculation
+                         * Maps fields involved in a calculation (like multiply) in an array
+                         * of fields which are involved in a calculation
                          */
                         acc.specialFieldsMap = {
                             ...acc.specialFieldsMap,
@@ -210,13 +211,13 @@ const TileModal = function (props) {
                 };
             } else if (FORM_TYPE_CONSTRAINTS[valueType]) {
                 /*** in case a field has no constraints, but does have a special type, like url or email
-                * a rule is added to enforce the form.item to be on that format by default.
+                * a rule is added to enforce the Form.Item to be on that format by default.
                 */
 
                 rulesMap[key] = {
                     rules: [{
                         type: valueType, 
-                        message: `Field must be in ${valueType} form`
+                        message: `Field must be in ${valueType} format`
                     }]
                 }
             }
@@ -235,7 +236,7 @@ const TileModal = function (props) {
 
     function _performAction(action, a, b) {
         if (action === FORM_ADVANCED_CONSTRAINTS.multiply) return a * b;
-        else if (action === FORM_ADVANCED_CONSTRAINTS.addition) return a+b;
+        else if (action === FORM_ADVANCED_CONSTRAINTS.add) return a+b;
     }
 }
 
